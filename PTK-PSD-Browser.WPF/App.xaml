@@ -1,7 +1,7 @@
 ﻿<Application x:Class="PTK_PSD_Browser.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:PTK_PSD_Browser.WPF"
+             xmlns:local="clr-namespace:PTK_PSD_Browser"
              StartupUri="Views/Windows/MainWindow.xaml">
     <Application.Resources>
          
