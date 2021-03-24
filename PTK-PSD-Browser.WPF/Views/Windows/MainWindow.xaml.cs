@@ -30,7 +30,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PTK_PSD_Browser.WPF
+namespace PTK_PSD_Browser.Views.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

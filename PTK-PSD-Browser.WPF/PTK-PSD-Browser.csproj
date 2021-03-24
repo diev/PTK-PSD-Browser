@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
-    <RootNamespace>PTK_PSD_Browser.WPF</RootNamespace>
+    <RootNamespace>PTK_PSD_Browser</RootNamespace>
     <UseWPF>true</UseWPF>
     <Version>7.0.0</Version>
     <Authors>Dmitrii Evdokimov</Authors>

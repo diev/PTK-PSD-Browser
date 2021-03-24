@@ -23,7 +23,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PTK_PSD_Browser.WPF
+namespace PTK_PSD_Browser
 {
     /// <summary>
     /// Interaction logic for App.xaml
