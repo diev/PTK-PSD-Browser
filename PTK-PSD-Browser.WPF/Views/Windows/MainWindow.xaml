@@ -4,35 +4,52 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PTK_PSD_Browser"
+        xmlns:uc="clr-namespace:PTK_PSD_Browser.Views.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="ПТК ПСД - Обозреватель отчетности" Height="450" Width="800">
     <DockPanel LastChildFill="False">
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="E_xit"/>
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход"/>
             </MenuItem>
-            <MenuItem Header="_Tools"/>
+            <MenuItem Header="Вид">
+                <MenuItem Header="Обновить"/>
+                <Separator/>
+                <MenuItem Header="Сортировать по коду" IsChecked="True"/>
+                <MenuItem Header="Сортировать по названию"/>
+                <Separator/>
+                <MenuItem Header="Очистить кэш"/>
+            </MenuItem>
+            <MenuItem Header="Сервис">
+                <Separator/>
+                <MenuItem Header="Добавить..."/>
+            </MenuItem>
+            <MenuItem Header="Справка">
+                <MenuItem Header="О программе..."/>
+            </MenuItem>
         </Menu>
-        <ToolBarTray DockPanel.Dock="Top">
-            <ToolBar>
-                <ComboBox Width="120">
-                    <ComboBoxItem Content="Все Формы"/>
-                </ComboBox>
-            </ToolBar>
-            <ToolBar>
-                <Button Content="Обновить"/>
-                <ToggleButton Content="Сегодня"/>
-                <ToggleButton Content="Вчера"/>
-                <ToggleButton Content="За неделю"/>
-            </ToolBar>
-            <ToolBar>
-                <DatePicker/>
-                <DatePicker/>
-            </ToolBar>
-        </ToolBarTray>
+        <ToolBar DockPanel.Dock="Top" >
+            <ComboBox x:Name="PostType" Width="250" Text="Все Формы"/>
+            <Button Content="&#x5B;" FontFamily="Wingdings" FontSize="14" ToolTip="Обновить"/>
+            <ToggleButton Content="Сегодня"/>
+            <ToggleButton Content="Вчера"/>
+            <ToggleButton Content="За 4 дня"/>
+            <ToggleButton Content="За неделю"/>
+            <Button Content="За период:"/>
+            <DatePicker FirstDayOfWeek="Monday"/>
+            <DatePicker FirstDayOfWeek="Monday"/>
+        </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem Content="Status"/>
-            <ProgressBar Height="10" Width="100"/>
+            <StatusBarItem>
+                <TextBlock Text="Status"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <ProgressBar Height="10" Width="100"/>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <ResizeGrip/>
+            </StatusBarItem>
         </StatusBar>
+        <uc:MainGrid/>
     </DockPanel>
 </Window>
