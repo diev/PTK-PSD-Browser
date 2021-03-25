@@ -52,7 +52,7 @@
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem>
-                <TextBlock Text="Загрузка..."/>
+                <TextBlock x:Name="Status" Text="Загрузка..."/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="1">
                 <ProgressBar Height="10" Width="100"/>

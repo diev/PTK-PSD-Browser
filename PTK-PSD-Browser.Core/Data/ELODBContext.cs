@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 using PTK_PSD_Browser.Core.ELODB;
 
+using System;
 using System.IO;
 
 #nullable disable
@@ -72,10 +73,11 @@ namespace PTK_PSD_Browser.Core.Data
 
                 var builder = new ConfigurationBuilder();
                 builder.SetBasePath(Directory.GetCurrentDirectory());
-                builder.AddJsonFile("application.json");
+                builder.AddJsonFile("appsettings.json");
 
                 var config = builder.Build();
-                string connectionString = config.GetConnectionString("ELODB");
+                string connectionString = 
+                    Environment.ExpandEnvironmentVariables(config.GetConnectionString("ELODB"));
 
                 optionsBuilder.UseSqlServer(connectionString);
             }

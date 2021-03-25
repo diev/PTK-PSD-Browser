@@ -15,39 +15,32 @@
 //------------------------------------------------------------------------------
 #endregion
 
-using PTK_PSD_Browser.Core.Data;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace PTK_PSD_Browser.Views.Windows
+namespace PTK_PSD_Browser.Core.Data
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public static class QueryDatabase
     {
-        public MainWindow()
+        public static bool UserExists(string username)
         {
-            InitializeComponent();
+            return UserId(username) != 0;
+        }
 
-            string username = Environment.GetEnvironmentVariable("USERNAME");
-            string text = QueryDatabase.UserExists(username)
-                ? "welcome!"
-                : "who are you?";
-            Status.Text = $"User {username}, {text}";
+        public static decimal UserId(string username)
+        {
+            using var db = new ELODBContext();
+            foreach (var user in db.EloUsers)
+            {
+                if (user.Usrname.Equals(username, StringComparison.OrdinalIgnoreCase))
+                {
+                    return user.Usrid;
+                }
+            }
+            return 0; //-1: admininf, -2: adminsys
         }
     }
 }
