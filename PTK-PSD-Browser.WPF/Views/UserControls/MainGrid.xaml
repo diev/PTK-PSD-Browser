@@ -42,12 +42,6 @@
             </DataGrid.Columns>
         </DataGrid>
         <GridSplitter Grid.Row="1" ResizeDirection="Rows" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="3"/>
-        <RichTextBox x:Name="Preview" Grid.Row="2">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="Выберите посылку для просмотра"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
+        <WebBrowser x:Name="Preview" Grid.Row="2"/>
     </Grid>
 </UserControl>

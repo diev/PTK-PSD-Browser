@@ -33,9 +33,9 @@
             <Button Content="&#x5B;" FontFamily="Wingdings" FontSize="14" ToolTip="Обновить"/>
             <ToggleButton Content="Сегодня"/>
             <ToggleButton Content="Вчера"/>
-            <ToggleButton Content="За 4 дня"/>
-            <ToggleButton Content="За неделю"/>
-            <Button Content="За период:"/>
+            <ToggleButton Content="4 дня"/>
+            <ToggleButton Content="Неделя"/>
+            <Button Content="Период:"/>
             <DatePicker FirstDayOfWeek="Monday"/>
             <DatePicker FirstDayOfWeek="Monday"/>
         </ToolBar>
