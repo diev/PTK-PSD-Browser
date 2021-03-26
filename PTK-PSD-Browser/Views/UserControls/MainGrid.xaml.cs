@@ -15,6 +15,8 @@
 //------------------------------------------------------------------------------
 #endregion
 
+using PTK_PSD_Browser.Core.Data;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +42,8 @@ namespace PTK_PSD_Browser.Views.UserControls
         public MainGrid()
         {
             InitializeComponent();
+
+            PostList.ItemsSource = QueryDatabase.PostStore();
         }
     }
 }

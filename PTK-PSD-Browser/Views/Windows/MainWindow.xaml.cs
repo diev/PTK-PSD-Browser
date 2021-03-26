@@ -16,6 +16,7 @@
 #endregion
 
 using PTK_PSD_Browser.Core.Data;
+using PTK_PSD_Browser.Core.Models;
 
 using System;
 using System.Collections.Generic;
@@ -43,11 +44,20 @@ namespace PTK_PSD_Browser.Views.Windows
         {
             InitializeComponent();
 
-            string username = Environment.GetEnvironmentVariable("USERNAME");
-            string text = QueryDatabase.UserExists(username)
-                ? "welcome!"
-                : "who are you?";
-            Status.Text = $"User {username}, {text}";
+            //TODO: DateNow_Click
+            DateTime now = DateTime.Now;
+            DateBegin.Text = now.ToString("dd.MM.yyyy");
+            DateBegin.DisplayDateEnd = now;
+            //
+            DateEnd.Text = DateBegin.Text;
+            DateEnd.DisplayDateEnd = DateBegin.DisplayDateEnd;
+
+            QueryDatabase.SelectUser();
+            UserName.Text = QueryDatabase.UserName;
+            PostType.ItemsSource = QueryDatabase.PostTitles();
+            PostType.SelectedIndex = 0;
+
+            Status.Text = "Готово";
         }
     }
 }

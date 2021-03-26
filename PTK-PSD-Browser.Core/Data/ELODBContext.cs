@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 using PTK_PSD_Browser.Core.ELODB;
-
-using System;
-using System.IO;
 
 #nullable disable
 
@@ -71,15 +67,7 @@ namespace PTK_PSD_Browser.Core.Data
                 //For more guidance on storing connection strings,
                 //see http://go.microsoft.com/fwlink/?LinkId=723263.
 
-                var builder = new ConfigurationBuilder();
-                builder.SetBasePath(Directory.GetCurrentDirectory());
-                builder.AddJsonFile("appsettings.json");
-
-                var config = builder.Build();
-                string connectionString = 
-                    Environment.ExpandEnvironmentVariables(config.GetConnectionString("ELODB"));
-
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseSqlServer(QueryDatabase.ConnectionString);
             }
         }
 

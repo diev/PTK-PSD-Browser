@@ -7,12 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <DataGrid x:Name="PostList">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="PostList" MinWidth="100" AutoGenerateColumns="True">
+            <!--
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.Header>
@@ -40,8 +41,9 @@
                     </DataGridTemplateColumn.Header>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+            -->
         </DataGrid>
-        <GridSplitter Grid.Row="1" ResizeDirection="Rows" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="3"/>
-        <WebBrowser x:Name="Preview" Grid.Row="2"/>
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
+        <WebBrowser x:Name="Preview" Grid.Column="2" MinWidth="100"/>
     </Grid>
 </UserControl>

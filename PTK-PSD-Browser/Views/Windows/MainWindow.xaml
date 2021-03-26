@@ -7,7 +7,7 @@
         xmlns:uc="clr-namespace:PTK_PSD_Browser.Views.UserControls"
         mc:Ignorable="d"
         Title="ПТК ПСД - Обозреватель отчетности" Height="450" Width="800">
-    <DockPanel LastChildFill="False">
+    <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="Выход"/>
@@ -30,14 +30,14 @@
         </Menu>
         <ToolBar DockPanel.Dock="Top" >
             <ComboBox x:Name="PostType" Width="250" Text="Все Формы"/>
-            <Button Content="&#x5B;" FontFamily="Wingdings" FontSize="14" ToolTip="Обновить"/>
-            <ToggleButton Content="Сегодня"/>
-            <ToggleButton Content="Вчера"/>
-            <ToggleButton Content="4 дня"/>
-            <ToggleButton Content="Неделя"/>
-            <Button Content="Период:"/>
-            <DatePicker FirstDayOfWeek="Monday"/>
-            <DatePicker FirstDayOfWeek="Monday"/>
+            <Button x:Name="Refresh" Content="&#x5B;" FontFamily="Wingdings" FontSize="14" ToolTip="Обновить"/>
+            <ToggleButton x:Name="DateNow" Content="Сегодня" IsChecked="True"/>
+            <ToggleButton x:Name="Date1Day" Content="Вчера"/>
+            <ToggleButton x:Name="Date4Days" Content="4 дня"/>
+            <ToggleButton x:Name="Date1Week" Content="Неделя"/>
+            <Button x:Name="DateSwith" Content="Период:"/>
+            <DatePicker x:Name="DateBegin" FirstDayOfWeek="Monday"/>
+            <DatePicker x:Name="DateEnd" FirstDayOfWeek="Monday"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
@@ -45,6 +45,8 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
@@ -55,9 +57,12 @@
                 <TextBlock x:Name="Status" Text="Загрузка..."/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="1">
-                <ProgressBar Height="10" Width="100"/>
+                <ProgressBar x:Name="Progress" Height="10" Width="100"/>
             </StatusBarItem>
-            <StatusBarItem Grid.Column="2" HorizontalAlignment="Right">
+            <StatusBarItem Grid.Column="2">
+                <TextBlock x:Name="UserName" Text="UserName?"/>
+            </StatusBarItem>
+            <StatusBarItem Grid.Column="3">
                 <ResizeGrip/>
             </StatusBarItem>
         </StatusBar>
