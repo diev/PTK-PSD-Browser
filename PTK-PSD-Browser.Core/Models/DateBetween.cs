@@ -15,42 +15,25 @@
 //------------------------------------------------------------------------------
 #endregion
 
-using PTK_PSD_Browser.Core.Data;
-
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace PTK_PSD_Browser.Views.UserControls
+namespace PTK_PSD_Browser.Core.Models
 {
-    /// <summary>
-    /// Логика взаимодействия для MainGrid.xaml
-    /// </summary>
-    public partial class MainGrid : UserControl
+    public class DateBetween : BaseObject
     {
-        public MainGrid()
+        public DateBetween()
         {
-            InitializeComponent();
+            DateTime now = DateTime.Now;
 
-            //PostList.ItemsSource = QueryDatabase.PostStore();
-            var group = CollectionViewSource.GetDefaultView(PostList.ItemsSource);
-            if (group != null && group.CanGroup)
-            {
-                group.GroupDescriptions.Clear();
-                group.GroupDescriptions.Add(new PropertyGroupDescription("Posttype"));
-            }
+            Begin = now;
+            End = now;
         }
+
+        public DateTime Begin { get; set; }
+        public DateTime End { get; set; }
     }
 }

@@ -15,42 +15,39 @@
 //------------------------------------------------------------------------------
 #endregion
 
-using PTK_PSD_Browser.Core.Data;
-
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace PTK_PSD_Browser.Views.UserControls
+namespace PTK_PSD_Browser.Core.Models
 {
-    /// <summary>
-    /// Логика взаимодействия для MainGrid.xaml
-    /// </summary>
-    public partial class MainGrid : UserControl
+    public class Title : BaseObject
     {
-        public MainGrid()
+        public Title(string postType = "*", string postName = "Все Формы")
         {
-            InitializeComponent();
-
-            //PostList.ItemsSource = QueryDatabase.PostStore();
-            var group = CollectionViewSource.GetDefaultView(PostList.ItemsSource);
-            if (group != null && group.CanGroup)
-            {
-                group.GroupDescriptions.Clear();
-                group.GroupDescriptions.Add(new PropertyGroupDescription("Posttype"));
-            }
+            PostType = postType;
+            PostName = postName;
         }
+
+        public string PostType { get; private set; }
+        public string PostName { get; private set; }
+
+        //public string ComboName => $"{PostType}: {PostName}";
     }
+
+    //public partial class EloSprPost
+    //{
+    //    public string Posttype { get; set; }
+    //    public string Postname { get; set; }
+    //    public decimal? Enable { get; set; }
+    //    public decimal? Dtype { get; set; }
+    //    public string KodOt { get; set; }
+    //    public decimal? PathId { get; set; }
+    //    public string VerElo { get; set; }
+    //    public decimal? Datatype { get; set; }
+    //    public decimal? SetEcpAuto { get; set; }
+    //    public decimal? PathSet { get; set; }
+    //}
 }

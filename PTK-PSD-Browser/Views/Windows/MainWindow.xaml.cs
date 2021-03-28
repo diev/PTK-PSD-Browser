@@ -17,6 +17,7 @@
 
 using PTK_PSD_Browser.Core.Data;
 using PTK_PSD_Browser.Core.Models;
+using PTK_PSD_Browser.Views.UserControls;
 
 using System;
 using System.Collections.Generic;
@@ -44,20 +45,123 @@ namespace PTK_PSD_Browser.Views.Windows
         {
             InitializeComponent();
 
-            //TODO: DateNow_Click
-            DateTime now = DateTime.Now;
-            DateBegin.Text = now.ToString("dd.MM.yyyy");
-            DateBegin.DisplayDateEnd = now;
-            //
-            DateEnd.Text = DateBegin.Text;
-            DateEnd.DisplayDateEnd = DateBegin.DisplayDateEnd;
+            Status.Text = "Запрос...";
+            Cursor = Cursors.Wait;
 
-            QueryDatabase.SelectUser();
-            UserName.Text = QueryDatabase.UserName;
-            PostType.ItemsSource = QueryDatabase.PostTitles();
-            PostType.SelectedIndex = 0;
+            DataContext = new MainViewModel();
+            var db = (MainViewModel)DataContext;
+
+            db.SetUser();
+            TitleList.SelectedIndex = 0;
 
             Status.Text = "Готово";
+            Cursor = Cursors.Arrow;
+        }
+
+        private void Date_Click(object sender, RoutedEventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            DateTime begin = now, end = now;
+
+            DateBegin.DisplayDateEnd = now;
+            DateEnd.DisplayDateEnd = now;
+
+            var button = (Button)sender;
+            switch (button.Name)
+            {
+                case "DateNow":
+                    {
+                        break;
+                    }
+                case "Date1Day":
+                    {
+                        begin = now.AddDays(-1);
+                        end = begin;
+                        break;
+                    }
+                case "Date4Days":
+                    {
+                        begin = now.AddDays(-4);
+                        end = now;
+                        break;
+                    }
+                case "Date1Week":
+                    {
+                        begin = now.AddDays(-7);
+                        end = now;
+                        break;
+                    }
+                case "DateSwitch":
+                    {
+                        if (button.Content.Equals("Период:"))
+                        {
+                            button.Content = "За:";
+                            DateEnd.Visibility = Visibility.Hidden;
+                        }
+                        else //"За:"
+                        {
+                            button.Content = "Период:";
+                            DateEnd.Visibility = Visibility.Visible;
+                        }
+                        end = begin;
+                        break;
+                    }
+            }
+            DateBegin.Text = begin.ToString("dd.MM.yyyy");
+            DateEnd.Text = end.ToString("dd.MM.yyyy");
+        }
+
+        private void Date_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var control = (DatePicker)sender;
+            if (control.SelectedDate != null)
+            {
+                var db = (MainViewModel)DataContext;
+                var date = (DateTime)control.SelectedDate;
+
+                if (control.Name.Equals("DateBegin"))
+                {
+                    db.DateBetween.Begin = date;
+                }
+
+                if (control.Name.Equals("DateEnd"))
+                {
+                    db.DateBetween.End = date;
+                }
+
+                RefreshList();
+            }
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshList();
+        }
+
+        private void RefreshList()
+        {
+            Status.Text = "Запрос...";
+            Cursor = Cursors.Wait;
+
+            var db = (MainViewModel)DataContext;
+            db.SetPosts();
+
+            Status.Text = "Готово";
+            Cursor = Cursors.Arrow;
+        }
+
+        private void TitleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var control = (ComboBox)sender;
+            if (control.SelectedIndex != -1)
+            {
+                var item = ((sender as ComboBox).SelectedItem as Title);
+                
+                var db = (MainViewModel)DataContext;
+                db.SelectedTitle = item;
+
+                RefreshList();
+            }
         }
     }
 }

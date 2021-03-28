@@ -1,9 +1,25 @@
-﻿<UserControl x:Class="PTK_PSD_Browser.Views.UserControls.MainGrid"
+﻿<!-- License
+// Copyright (c) Dmitrii Evdokimov
+// Source https://github.com/diev/
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+-->
+    
+<UserControl x:Class="PTK_PSD_Browser.Views.UserControls.MainGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PTK_PSD_Browser.Views.UserControls"
+             xmlns:local="clr-namespace:PTK_PSD_Browser.Views.UserControls" 
+             xmlns:data="clr-namespace:PTK_PSD_Browser.Core.Data;assembly=PTK-PSD-Browser.Core" d:DataContext="{d:DesignInstance Type=data:MainViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -12,36 +28,121 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="PostList" MinWidth="100" AutoGenerateColumns="True">
-            <!--
+        <DataGrid x:Name="PostList" MinWidth="100" AutoGenerateColumns="False" GridLinesVisibility="Horizontal" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" HorizontalGridLinesBrush="LightGray" IsReadOnly="True" ItemsSource="{Binding Path=Posts}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="PostDirection">
                     <DataGridTemplateColumn.Header>
-                        <TextBlock Text="Напр."/>
+                        <TextBlock Text="Направление"/>
                     </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Bik}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="PostType">
                     <DataGridTemplateColumn.Header>
                         <TextBlock Text="Тип"/>
                     </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Filetype}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="PostEnclosed">
                     <DataGridTemplateColumn.Header>
-                        <TextBlock Text="Инфо"/>
+                        <TextBlock Text="Содержимое"/>
                     </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Posttype}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="PostReceived">
                     <DataGridTemplateColumn.Header>
                         <TextBlock Text="Получено"/>
                     </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Dt, StringFormat={}{0:dd.MM.yy}}" Foreground="Gray"/>
+                                <TextBlock Text=" "/>
+                                <TextBlock Text="{Binding Path=Dt, StringFormat={}{0:HH:mm}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="PostFile">
                     <DataGridTemplateColumn.Header>
-                        <TextBlock Text="Посылка"/>
+                        <TextBlock Text="Файл"/>
                     </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Filename}" Foreground="Gray"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="PostState">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Состояние"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=State}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="PostError">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Код ошибки"/>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Error}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-            -->
+            <DataGrid.GroupStyle>
+                <!-- Style for groups at top level. -->
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Margin" Value="0,0,0,5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="True" Background="#FF112255" BorderBrush="#FF002255" Foreground="#FFEEEEEE" BorderThickness="1,1,1,5">
+                                            <Expander.Header>
+                                                <DockPanel>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" Width="100"/>
+                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}"/>
+                                                </DockPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+                <!-- Style for groups under the top level. -->
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <DockPanel Background="LightBlue">
+                                <TextBlock Text="{Binding Path=Name, Converter={StaticResource completeConverter}}" Foreground="Blue" Margin="30,0,0,0" Width="100"/>
+                                <TextBlock Text="{Binding Path=ItemCount}" Foreground="Blue"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
         </DataGrid>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
         <WebBrowser x:Name="Preview" Grid.Column="2" MinWidth="100"/>

@@ -1,12 +1,40 @@
-﻿<Window x:Class="PTK_PSD_Browser.Views.Windows.MainWindow"
+﻿<!-- License
+// Copyright (c) Dmitrii Evdokimov
+// Source https://github.com/diev/
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+-->
+    
+<Window x:Class="PTK_PSD_Browser.Views.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PTK_PSD_Browser"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
         xmlns:uc="clr-namespace:PTK_PSD_Browser.Views.UserControls"
+        xmlns:data="clr-namespace:PTK_PSD_Browser.Core.Data;assembly=PTK-PSD-Browser.Core" d:DataContext="{d:DesignInstance Type=data:MainViewModel}"
         mc:Ignorable="d"
         Title="ПТК ПСД - Обозреватель отчетности" Height="450" Width="800">
+    <Window.Resources>
+        <!--
+        <src:Posttypes x:Key="Posttypes"/>
+        <CollectionViewSource x:Key="cvs" Source="{StaticResource Posts}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Posttype"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        -->
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
@@ -29,15 +57,25 @@
             </MenuItem>
         </Menu>
         <ToolBar DockPanel.Dock="Top" >
-            <ComboBox x:Name="PostType" Width="250" Text="Все Формы"/>
-            <Button x:Name="Refresh" Content="&#x5B;" FontFamily="Wingdings" FontSize="14" ToolTip="Обновить"/>
-            <ToggleButton x:Name="DateNow" Content="Сегодня" IsChecked="True"/>
-            <ToggleButton x:Name="Date1Day" Content="Вчера"/>
-            <ToggleButton x:Name="Date4Days" Content="4 дня"/>
-            <ToggleButton x:Name="Date1Week" Content="Неделя"/>
-            <Button x:Name="DateSwith" Content="Период:"/>
-            <DatePicker x:Name="DateBegin" FirstDayOfWeek="Monday"/>
-            <DatePicker x:Name="DateEnd" FirstDayOfWeek="Monday"/>
+            <ComboBox x:Name="TitleList" Width="250" ItemsSource="{Binding Path=Titles}" SelectionChanged="TitleList_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=PostType}"/>
+                            <TextBlock Text=": " Foreground="LightGray"/>
+                            <TextBlock Text="{Binding Path=PostName}" Foreground="Gray"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button x:Name="Refresh" Content="&#x5B;" FontFamily="Wingdings" FontSize="14" ToolTip="Обновить" Click="Refresh_Click"/>
+            <Button x:Name="DateNow" Content="Сегодня" Click="Date_Click"/>
+            <Button x:Name="Date1Day" Content="Вчера" Click="Date_Click"/>
+            <Button x:Name="Date4Days" Content="4 дня" Click="Date_Click"/>
+            <Button x:Name="Date1Week" Content="Неделя" Click="Date_Click"/>
+            <Button x:Name="DateSwitch" Content="Период:" Click="Date_Click"/>
+            <DatePicker x:Name="DateBegin" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=DateBetween.Begin}"/>
+            <DatePicker x:Name="DateEnd" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=DateBetween.End}"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
@@ -60,7 +98,7 @@
                 <ProgressBar x:Name="Progress" Height="10" Width="100"/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="2">
-                <TextBlock x:Name="UserName" Text="UserName?"/>
+                <TextBlock x:Name="UserName" Text="{Binding Path=User.Name}"/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="3">
                 <ResizeGrip/>
