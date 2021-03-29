@@ -48,17 +48,17 @@ namespace PTK_PSD_Browser.Views.Windows
             Status.Text = "Запрос...";
             Cursor = Cursors.Wait;
 
-            DataContext = new MainViewModel();
-            var db = (MainViewModel)DataContext;
+            DataContext = new ViewModel();
+            var db = (ViewModel)DataContext;
 
-            db.SetUser();
+            db.SetUser("evdokimov");
             TitleList.SelectedIndex = 0;
 
             Status.Text = "Готово";
             Cursor = Cursors.Arrow;
         }
 
-        private void Date_Click(object sender, RoutedEventArgs e)
+        private void Period_Click(object sender, RoutedEventArgs e)
         {
             DateTime now = DateTime.Now;
             DateTime begin = now, end = now;
@@ -66,8 +66,8 @@ namespace PTK_PSD_Browser.Views.Windows
             DateBegin.DisplayDateEnd = now;
             DateEnd.DisplayDateEnd = now;
 
-            var button = (Button)sender;
-            switch (button.Name)
+            var name = (e.Source as FrameworkElement).Name;
+            switch (name)
             {
                 case "DateNow":
                     {
@@ -91,24 +91,31 @@ namespace PTK_PSD_Browser.Views.Windows
                         end = now;
                         break;
                     }
-                case "DateSwitch":
-                    {
-                        if (button.Content.Equals("Период:"))
-                        {
-                            button.Content = "За:";
-                            DateEnd.Visibility = Visibility.Hidden;
-                        }
-                        else //"За:"
-                        {
-                            button.Content = "Период:";
-                            DateEnd.Visibility = Visibility.Visible;
-                        }
-                        end = begin;
-                        break;
-                    }
             }
             DateBegin.Text = begin.ToString("dd.MM.yyyy");
             DateEnd.Text = end.ToString("dd.MM.yyyy");
+
+            bool date1 = begin == end;
+
+            DateEnd.Visibility = date1
+                ? Visibility.Hidden
+                : Visibility.Visible;
+
+            Date1.IsChecked = date1;
+            Date2.IsChecked = !date1;
+        }
+
+        private void DateSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            var name = (e.Source as FrameworkElement).Name;
+            bool date1 = name.Equals(nameof(Date1));
+
+            DateEnd.Visibility = date1
+                ? Visibility.Hidden
+                : Visibility.Visible;
+
+            Date1.IsChecked = date1;
+            Date2.IsChecked = !date1;
         }
 
         private void Date_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -116,17 +123,17 @@ namespace PTK_PSD_Browser.Views.Windows
             var control = (DatePicker)sender;
             if (control.SelectedDate != null)
             {
-                var db = (MainViewModel)DataContext;
+                var db = (ViewModel)DataContext;
                 var date = (DateTime)control.SelectedDate;
 
-                if (control.Name.Equals("DateBegin"))
+                if (control.Name.Equals(nameof(DateBegin)))
                 {
-                    db.DateBetween.Begin = date;
+                    db.PostFilter.DateBegin = date;
                 }
 
-                if (control.Name.Equals("DateEnd"))
+                if (control.Name.Equals(nameof(DateEnd)))
                 {
-                    db.DateBetween.End = date;
+                    db.PostFilter.DateEnd = date;
                 }
 
                 RefreshList();
@@ -143,7 +150,7 @@ namespace PTK_PSD_Browser.Views.Windows
             Status.Text = "Запрос...";
             Cursor = Cursors.Wait;
 
-            var db = (MainViewModel)DataContext;
+            var db = (ViewModel)DataContext;
             db.SetPosts();
 
             Status.Text = "Готово";
@@ -156,8 +163,8 @@ namespace PTK_PSD_Browser.Views.Windows
             if (control.SelectedIndex != -1)
             {
                 var item = ((sender as ComboBox).SelectedItem as Title);
-                
-                var db = (MainViewModel)DataContext;
+
+                var db = (ViewModel)DataContext;
                 db.SelectedTitle = item;
 
                 RefreshList();

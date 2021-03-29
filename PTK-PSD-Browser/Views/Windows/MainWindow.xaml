@@ -22,7 +22,7 @@
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
         xmlns:uc="clr-namespace:PTK_PSD_Browser.Views.UserControls"
-        xmlns:data="clr-namespace:PTK_PSD_Browser.Core.Data;assembly=PTK-PSD-Browser.Core" d:DataContext="{d:DesignInstance Type=data:MainViewModel}"
+        xmlns:data="clr-namespace:PTK_PSD_Browser.Core.Data;assembly=PTK-PSD-Browser.Core" d:DataContext="{d:DesignInstance Type=data:ViewModel}"
         mc:Ignorable="d"
         Title="ПТК ПСД - Обозреватель отчетности" Height="450" Width="800">
     <Window.Resources>
@@ -34,6 +34,11 @@
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
         -->
+        <CollectionViewSource x:Key="titleViewSource"/>
+        <CollectionViewSource x:Key="postsViewSource" Source="{Binding SelectedTitle, Source={StaticResource titleViewSource}}"/>
+
+        <CollectionViewSource x:Key="postViewSource"/>
+        <CollectionViewSource x:Key="postPreviewViewSource" Source="{Binding SelectedPost, Source={StaticResource postViewSource}}"/>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -47,6 +52,15 @@
                 <MenuItem Header="Сортировать по названию"/>
                 <Separator/>
                 <MenuItem Header="Очистить кэш"/>
+            </MenuItem>
+            <MenuItem Header="Период">
+                <MenuItem x:Name="DateNow" Header="Сегодня" Click="Period_Click"/>
+                <MenuItem x:Name="Date1Day" Header="Вчера" Click="Period_Click"/>
+                <MenuItem x:Name="Date4Days" Header="4 дня" Click="Period_Click"/>
+                <MenuItem x:Name="Date1Week" Header="Неделя" Click="Period_Click"/>
+                <Separator/>
+                <MenuItem x:Name="Date1" Header="За дату" Click="DateSwitch_Click" IsCheckable="True" IsChecked="True"/>
+                <MenuItem x:Name="Date2" Header="За период" Click="DateSwitch_Click" IsCheckable="True"/>
             </MenuItem>
             <MenuItem Header="Сервис">
                 <Separator/>
@@ -62,20 +76,15 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Path=PostType}"/>
-                            <TextBlock Text=": " Foreground="LightGray"/>
-                            <TextBlock Text="{Binding Path=PostName}" Foreground="Gray"/>
+                            <TextBlock Text=": "/>
+                            <TextBlock Text="{Binding Path=PostName}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Button x:Name="Refresh" Content="&#x5B;" FontFamily="Wingdings" FontSize="14" ToolTip="Обновить" Click="Refresh_Click"/>
-            <Button x:Name="DateNow" Content="Сегодня" Click="Date_Click"/>
-            <Button x:Name="Date1Day" Content="Вчера" Click="Date_Click"/>
-            <Button x:Name="Date4Days" Content="4 дня" Click="Date_Click"/>
-            <Button x:Name="Date1Week" Content="Неделя" Click="Date_Click"/>
-            <Button x:Name="DateSwitch" Content="Период:" Click="Date_Click"/>
-            <DatePicker x:Name="DateBegin" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=DateBetween.Begin}"/>
-            <DatePicker x:Name="DateEnd" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=DateBetween.End}"/>
+            <DatePicker x:Name="DateBegin" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=PostFilter.DateBegin}"/>
+            <DatePicker x:Name="DateEnd" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=PostFilter.DateEnd}"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
@@ -104,6 +113,15 @@
                 <ResizeGrip/>
             </StatusBarItem>
         </StatusBar>
-        <uc:MainGrid/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <uc:PostListControl/>
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
+            <uc:PreviewControl Grid.Column="2"/>
+        </Grid>
     </DockPanel>
 </Window>

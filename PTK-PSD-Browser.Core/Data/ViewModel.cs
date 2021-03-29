@@ -30,7 +30,7 @@ using System.Windows.Input;
 
 namespace PTK_PSD_Browser.Core.Data
 {
-    public class MainViewModel : BaseObject
+    public class ViewModel : BaseObject
     {
         public ObservableCollection<Title> Titles { get; set; } = new();
         public ObservableCollection<Post> Posts { get; set; } = new();
@@ -38,7 +38,10 @@ namespace PTK_PSD_Browser.Core.Data
         public User User { get; set; } = new();
 
         public Title SelectedTitle { get; set; } = new();
-        public DateBetween DateBetween { get; set; } = new();
+
+        public PostFilter PostFilter { get; set; } = new();
+
+        public string SelectedFilename { get; set; } = "File!";
 
         //public UserInfo SelectedUserInfo
         //{
@@ -133,8 +136,8 @@ namespace PTK_PSD_Browser.Core.Data
             using var connection = new SqlConnection(QueryDatabase.ConnectionString);
             connection.Open();
 
-            string begin = DateBetween.Begin.ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"));
-            string end = DateBetween.End.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"));
+            string begin = PostFilter.DateBegin.ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"));
+            string end = PostFilter.DateEnd.AddDays(1).ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"));
 
             string dtBetween = $"dt BETWEEN '{begin}' AND '{end}'";
             string sql = $"SELECT filetype, posttype, dt, filename, state_, bik, error_ FROM elo_arh_post WHERE {dtBetween} AND ";

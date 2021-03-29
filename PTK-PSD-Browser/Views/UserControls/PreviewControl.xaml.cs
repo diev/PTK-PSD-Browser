@@ -20,20 +20,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
-namespace PTK_PSD_Browser.Core.Models
+namespace PTK_PSD_Browser.Views.UserControls
 {
-    public class DateBetween : BaseObject
+    /// <summary>
+    /// Логика взаимодействия для PreviewControl.xaml
+    /// </summary>
+    public partial class PreviewControl : UserControl
     {
-        public DateBetween()
+        public PreviewControl()
         {
-            DateTime now = DateTime.Now;
-
-            Begin = now;
-            End = now;
+            InitializeComponent();
+            //DataContext = this;
         }
 
-        public DateTime Begin { get; set; }
-        public DateTime End { get; set; }
+        //public string Title { get; set; }
     }
 }
