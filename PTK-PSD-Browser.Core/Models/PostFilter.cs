@@ -31,6 +31,8 @@ namespace PTK_PSD_Browser.Core.Models
 
             DateBegin = now;
             DateEnd = now;
+
+            PostTypes = "*";
         }
 
         public string PostTypes { get; set; }

@@ -41,8 +41,6 @@ namespace PTK_PSD_Browser.Core.Data
 
         public PostFilter PostFilter { get; set; } = new();
 
-        public string SelectedFilename { get; set; } = "File!";
-
         //public UserInfo SelectedUserInfo
         //{
         //    get => GetValue<UserInfo>(nameof(SelectedUserInfo));

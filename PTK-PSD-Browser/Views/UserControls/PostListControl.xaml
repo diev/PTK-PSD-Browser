@@ -24,7 +24,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView x:Name="PostList" ItemsSource="{Binding Path=Posts}" SelectionMode="Single" SelectionChanged="PostList_SelectionChanged">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ListView x:Name="PostList" ItemsSource="{Binding Path=Posts}" SelectionMode="Single" SelectionChanged="PostList_SelectionChanged" MouseDoubleClick="PostList_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Bik}">Направление</GridViewColumn>
@@ -34,13 +39,10 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Filename}">Файл</GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=State}">Состояние</GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=Error}">Код ошибки</GridViewColumn>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:ChangePropertyAction PropertyName="{Binding Path=SelectedFilename}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </GridView>
             </ListView.View>    
         </ListView>
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
+        <local:PreviewControl x:Name="Preview" Grid.Column="2"/>
     </Grid>
 </UserControl>

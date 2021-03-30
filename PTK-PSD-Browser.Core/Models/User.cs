@@ -25,7 +25,14 @@ namespace PTK_PSD_Browser.Core.Models
 {
     public class User : BaseObject
     {
-        public User(string name = "?", int id = 0, string postTypes = null)
+        public User()
+        {
+            Name = "?";
+            Id = 0;
+            PostTypes = null;
+        }
+
+        public User(string name, int id, string postTypes)
         {
             Name = name;
             Id = id;

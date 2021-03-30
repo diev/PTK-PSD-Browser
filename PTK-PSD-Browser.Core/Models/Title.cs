@@ -25,14 +25,21 @@ namespace PTK_PSD_Browser.Core.Models
 {
     public class Title : BaseObject
     {
-        public Title(string postType = "*", string postName = "Все Формы")
+        public Title()
+        {
+            PostType = "*";
+            PostName = "Все Формы";
+        }
+
+        public Title(string postType, string postName)
         {
             PostType = postType;
             PostName = postName;
         }
 
-        public string PostType { get; private set; }
-        public string PostName { get; private set; }
+        public string PostType { get; set; }
+        public string PostName { get; set; }
+        public string PostDescription => $"{PostType}: {PostName}";
 
         //public string ComboName => $"{PostType}: {PostName}";
     }

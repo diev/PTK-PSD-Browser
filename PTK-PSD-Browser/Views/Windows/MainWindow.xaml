@@ -71,20 +71,16 @@
             </MenuItem>
         </Menu>
         <ToolBar DockPanel.Dock="Top" >
-            <ComboBox x:Name="TitleList" Width="250" ItemsSource="{Binding Path=Titles}" SelectionChanged="TitleList_SelectionChanged">
+            <ComboBox x:Name="TitleList" Width="250" ItemsSource="{Binding Path=Titles}" SelectionChanged="TitleList_SelectionChanged" Margin="2,0,2,0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Path=PostType}"/>
-                            <TextBlock Text=": "/>
-                            <TextBlock Text="{Binding Path=PostName}"/>
-                        </StackPanel>
+                        <TextBlock Text="{Binding Path=PostDescription}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button x:Name="Refresh" Content="&#x5B;" FontFamily="Wingdings" FontSize="14" ToolTip="Обновить" Click="Refresh_Click"/>
-            <DatePicker x:Name="DateBegin" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=PostFilter.DateBegin}"/>
-            <DatePicker x:Name="DateEnd" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=PostFilter.DateEnd}"/>
+            <DatePicker x:Name="DateBegin" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=PostFilter.DateBegin}" Margin="2,0,2,0" BorderThickness="0,0,0,0" VerticalContentAlignment="Center"/>
+            <DatePicker x:Name="DateEnd" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=PostFilter.DateEnd}" Margin="2,0,2,0" BorderThickness="0,0,0,0" VerticalContentAlignment="Center"/>
+            <Button x:Name="Refresh" Content="&#x5B;" FontFamily="Wingdings" FontSize="18" ToolTip="Обновить" Click="Refresh_Click" Margin="2,0,2,0" Width="50"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
@@ -113,15 +109,6 @@
                 <ResizeGrip/>
             </StatusBarItem>
         </StatusBar>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <uc:PostListControl/>
-            <GridSplitter Grid.Column="1" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
-            <uc:PreviewControl Grid.Column="2"/>
-        </Grid>
+        <uc:PostListControl/>
     </DockPanel>
 </Window>

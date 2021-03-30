@@ -37,12 +37,16 @@ namespace PTK_PSD_Browser.Views.UserControls
     /// </summary>
     public partial class PreviewControl : UserControl
     {
+        static int level = 0;
+
         public PreviewControl()
         {
             InitializeComponent();
-            //DataContext = this;
-        }
 
-        //public string Title { get; set; }
+            if (++level > 0)
+            {
+                Title.Text += $"+{level}";
+            }
+        }
     }
 }

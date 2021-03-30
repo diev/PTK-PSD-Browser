@@ -46,15 +46,19 @@ namespace PTK_PSD_Browser.Views.UserControls
             InitializeComponent();
         }
 
-        //public string SelectedFilename { get; set; } = "File!";
-
         private void PostList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = PostList.SelectedItem as Post;
-            if (item != null)
+            if (PostList.SelectedItem is Post item)
             {
-                (DataContext as ViewModel).SelectedFilename = item.Filename;
+                Preview.Title.Text = item.Filename;
+                //Preview.UpdateLayout();
             }
+        }
+
+        private void PostList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var fileFrame = new PreviewControl();
+            Preview.Content.Children.Add(fileFrame);
         }
     }
 }

@@ -19,17 +19,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PTK_PSD_Browser.Views.UserControls" 
-             xmlns:data="clr-namespace:PTK_PSD_Browser.Core.Data;assembly=PTK-PSD-Browser.Core" d:DataContext="{d:DesignInstance Type=data:ViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <GroupBox x:Name="Preview">
+        <GroupBox>
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Path=SelectedFilename}"/>
+                    <TextBlock x:Name="Title" Text="Файл"/>
                 </StackPanel>
             </GroupBox.Header>
-            <StackPanel/>
+            <StackPanel x:Name="Content"/>
         </GroupBox>
     </Grid>
 </UserControl>

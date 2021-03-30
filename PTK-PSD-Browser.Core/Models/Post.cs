@@ -25,6 +25,9 @@ namespace PTK_PSD_Browser.Core.Models
 {
     public class Post : BaseObject
     {
+        public Post()
+        { }
+
         public Post(string filetype, string posttype, DateTime dt, string filename, int state, int bik, int error)
         {
             Filetype = filetype;
