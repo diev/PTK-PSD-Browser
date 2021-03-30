@@ -51,14 +51,13 @@ namespace PTK_PSD_Browser.Views.UserControls
             if (PostList.SelectedItem is Post item)
             {
                 Preview.Title.Text = item.Filename;
-                //Preview.UpdateLayout();
             }
         }
 
         private void PostList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var fileFrame = new PreviewControl();
-            Preview.Content.Children.Add(fileFrame);
+            var preview2 = new PreviewControl();
+            Preview.Content.Children.Add(preview2);
         }
     }
 }

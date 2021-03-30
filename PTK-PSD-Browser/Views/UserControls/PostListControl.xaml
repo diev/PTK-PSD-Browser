@@ -43,6 +43,8 @@
             </ListView.View>    
         </ListView>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
-        <local:PreviewControl x:Name="Preview" Grid.Column="2"/>
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <local:PreviewControl x:Name="Preview"/>
+        </ScrollViewer>
     </Grid>
 </UserControl>
