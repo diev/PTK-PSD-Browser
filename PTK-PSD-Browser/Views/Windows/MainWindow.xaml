@@ -1,45 +1,17 @@
-﻿<!-- License
-// Copyright (c) Dmitrii Evdokimov
-// Source https://github.com/diev/
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
--->
-    
-<Window x:Class="PTK_PSD_Browser.Views.Windows.MainWindow"
+﻿<Window x:Class="PTK_PSD_Browser.Views.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PTK_PSD_Browser"
-        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-        xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
-        xmlns:uc="clr-namespace:PTK_PSD_Browser.Views.UserControls"
-        xmlns:data="clr-namespace:PTK_PSD_Browser.Core.Data;assembly=PTK-PSD-Browser.Core" d:DataContext="{d:DesignInstance Type=data:ViewModel}"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:usercontrols="clr-namespace:PTK_PSD_Browser.Views.UserControls"
+        xmlns:local="clr-namespace:PTK_PSD_Browser" 
+        xmlns:viewmodels="clr-namespace:PTK_PSD_Browser.Core.ViewModels;assembly=PTK-PSD-Browser.Core"
         mc:Ignorable="d"
         Title="ПТК ПСД - Обозреватель отчетности" Height="450" Width="800">
-    <Window.Resources>
-        <!--
-        <src:Posttypes x:Key="Posttypes"/>
-        <CollectionViewSource x:Key="cvs" Source="{StaticResource Posts}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Posttype"/>
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
-        -->
-        <CollectionViewSource x:Key="titleViewSource"/>
-        <CollectionViewSource x:Key="postsViewSource" Source="{Binding SelectedTitle, Source={StaticResource titleViewSource}}"/>
-
-        <CollectionViewSource x:Key="postViewSource"/>
-        <CollectionViewSource x:Key="postPreviewViewSource" Source="{Binding SelectedPost, Source={StaticResource postViewSource}}"/>
-    </Window.Resources>
+    <Window.DataContext>
+        <viewmodels:MainViewModel/>
+    </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
@@ -71,15 +43,22 @@
             </MenuItem>
         </Menu>
         <ToolBar DockPanel.Dock="Top" >
-            <ComboBox x:Name="TitleList" Width="250" ItemsSource="{Binding Path=Titles}" SelectionChanged="TitleList_SelectionChanged" Margin="2,0,2,0">
+            <ComboBox x:Name="TitleList" Width="250" ItemsSource="{Binding Path=TitleObjects}" 
+                      SelectedValue="{Binding Path=PostFilterObject.PostType, Mode=OneWayToSource}"
+                      SelectedValuePath="PostType"
+                      Margin="2,0,2,0" SelectedIndex="0" SelectionChanged="TitleList_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Path=PostDescription}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <DatePicker x:Name="DateBegin" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=PostFilter.DateBegin}" Margin="2,0,2,0" BorderThickness="0,0,0,0" VerticalContentAlignment="Center"/>
-            <DatePicker x:Name="DateEnd" FirstDayOfWeek="Monday" SelectedDateChanged="Date_SelectedDateChanged" SelectedDate="{Binding Path=PostFilter.DateEnd}" Margin="2,0,2,0" BorderThickness="0,0,0,0" VerticalContentAlignment="Center"/>
+            <DatePicker x:Name="DateBegin" SelectedDate="{Binding Path=PostFilterObject.DateBegin}"
+                        DisplayDateEnd="{x:Static sys:DateTime.Now}"
+                        FirstDayOfWeek="Monday" Margin="2,0,2,0" BorderThickness="0,0,0,0" VerticalContentAlignment="Center"/>
+            <DatePicker x:Name="DateEnd" SelectedDate="{Binding Path=PostFilterObject.DateEnd}" 
+                        DisplayDateEnd="{x:Static sys:DateTime.Now}"
+                        FirstDayOfWeek="Monday" Margin="2,0,2,0" BorderThickness="0,0,0,0" VerticalContentAlignment="Center"/>
             <Button x:Name="Refresh" Content="&#x5B;" FontFamily="Wingdings" FontSize="18" ToolTip="Обновить" Click="Refresh_Click" Margin="2,0,2,0" Width="50"/>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom">
@@ -96,19 +75,49 @@
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            <StatusBarItem>
-                <TextBlock x:Name="Status" Text="Загрузка..."/>
+            <StatusBarItem Margin="5,0">
+                <TextBlock x:Name="Status" Text="Готово"/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="1">
                 <ProgressBar x:Name="Progress" Height="10" Width="100"/>
             </StatusBarItem>
-            <StatusBarItem Grid.Column="2">
-                <TextBlock x:Name="UserName" Text="{Binding Path=User.Name}"/>
+            <StatusBarItem Grid.Column="2" Margin="5,0">
+                <TextBlock x:Name="UserName" Text="{Binding Path=UserName}"/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="3">
                 <ResizeGrip/>
             </StatusBarItem>
         </StatusBar>
-        <uc:PostListControl/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="PostList" ItemsSource="{Binding Path=PostObjects}" SelectionMode="Single" 
+                      SelectedValue="{Binding Path=FileName}"
+                      SelectedValuePath="Filename" SelectionChanged="PostList_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Куда">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontFamily="Wingdings" FontSize="18" Text="{Binding Path=Arrow}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Filetype}">Тип</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Posttype}">Содержимое</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Dt, StringFormat={}{0:dd.MM.yy HH:mm}}" >Получено</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Filename}">Файл</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Error}">Код ошибки</GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="3"/>
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                <usercontrols:PostViewControl x:Name="PostView"/>
+            </ScrollViewer>
+        </Grid>
     </DockPanel>
 </Window>

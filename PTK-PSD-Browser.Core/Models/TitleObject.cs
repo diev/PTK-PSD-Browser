@@ -15,23 +15,17 @@
 //------------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace PTK_PSD_Browser.Core.Models
 {
-    public class Title : BaseObject
+    public class TitleObject : BaseObject
     {
-        public Title()
+        public TitleObject()
         {
             PostType = "*";
             PostName = "Все Формы";
         }
 
-        public Title(string postType, string postName)
+        public TitleObject(string postType, string postName)
         {
             PostType = postType;
             PostName = postName;
@@ -39,6 +33,7 @@ namespace PTK_PSD_Browser.Core.Models
 
         public string PostType { get; set; }
         public string PostName { get; set; }
+
         public string PostDescription => $"{PostType}: {PostName}";
 
         //public string ComboName => $"{PostType}: {PostName}";

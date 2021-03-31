@@ -16,39 +16,24 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace PTK_PSD_Browser.Views.UserControls
+namespace PTK_PSD_Browser.Core.Models
 {
-    /// <summary>
-    /// Логика взаимодействия для PreviewControl.xaml
-    /// </summary>
-    public partial class PreviewControl : UserControl
+    public class PostFilterObject : BaseObject
     {
-        static int _level = 0;
-
-        public PreviewControl()
+        public PostFilterObject()
         {
-            InitializeComponent();
-            
-            if (_level > 0)
-            {
-                Title.Text += $" ({_level})";
-            }
+            var now = DateTime.Now;
 
-            _level++;
+            DateBegin = now;
+            DateEnd = now;
+
+            PostType = "*";
         }
+
+        public string PostType { get; set; }
+        public string PostTypes { get; set; }
+        public DateTime DateBegin { get; set; }
+        public DateTime DateEnd { get; set; }
     }
 }

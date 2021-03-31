@@ -15,23 +15,19 @@
 //------------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace PTK_PSD_Browser.Core.Models
 {
-    [Serializable]
-    public abstract class PropertyNotifier : INotifyPropertyChanged
+    public class UserObject : BaseObject
     {
-        public PropertyNotifier() : base() { }
-
-        [field: NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        public UserObject(string name = "?", int id = 0, string postTypes = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Name = name;
+            Id = id;
+            PostTypes = postTypes;
         }
+
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public string PostTypes { get; set; }
     }
 }

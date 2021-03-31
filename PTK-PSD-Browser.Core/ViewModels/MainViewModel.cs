@@ -16,28 +16,34 @@
 #endregion
 
 using PTK_PSD_Browser.Core.Data;
-using PTK_PSD_Browser.Views.Windows;
+using PTK_PSD_Browser.Core.Models;
 
-using System;
-using System.Windows;
+using System.Collections.ObjectModel;
 
-namespace PTK_PSD_Browser
+namespace PTK_PSD_Browser.Core.ViewModels
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public class MainViewModel : BaseObject
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            QueryDatabase.UserName = Environment.GetEnvironmentVariable("USERNAME");
+        //public IReadOnlyList<string> Arguments { get; }
 
-            MainWindow = new MainWindow();
-            //{
-            //    DataContext = new MainViewModel() //(e.Args)
-            //};
-            MainWindow.Show();
+        public string UserName { get; private set; }
+
+        public ObservableCollection<TitleObject> TitleObjects { get; set; }
+        public PostFilterObject PostFilterObject { get; set; } = new();
+
+        public ObservableCollection<PostObject> PostObjects { get; set; }
+        public string FileName { get; set; }
+
+        public MainViewModel()
+        {
+            UserName = QueryDatabase.UserName;
+            TitleObjects = QueryDatabase.GetTitleObjects();
+            PostObjects = QueryDatabase.GetPostObjects(PostFilterObject);
         }
+
+        //public MainViewModel(IReadOnlyList<string> arguments)
+        //{
+        //    Arguments = arguments;
+        //}
     }
 }

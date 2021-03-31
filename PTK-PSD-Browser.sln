@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTK-PSD-Browser", "PTK-PSD-Browser\PTK-PSD-Browser.csproj", "{899BE7FD-7C2F-4D6F-971A-9F74FC64E09E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTK-PSD-Browser.Core", "PTK-PSD-Browser.Core\PTK-PSD-Browser.Core.csproj", "{C61E2177-569E-4FAB-9CA2-528D95B5463C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PTK-PSD-Browser.Core", "PTK-PSD-Browser.Core\PTK-PSD-Browser.Core.csproj", "{C61E2177-569E-4FAB-9CA2-528D95B5463C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

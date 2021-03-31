@@ -16,26 +16,20 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PTK_PSD_Browser.Core.Models
 {
-    public class Post : BaseObject
+    public class PostObject : BaseObject
     {
-        public Post()
-        { }
+        public PostObject() { }
 
-        public Post(string filetype, string posttype, DateTime dt, string filename, int state, int bik, int error)
+        public PostObject(string filetype, string posttype, DateTime dt, string filename, int state, int error)
         {
             Filetype = filetype;
             Posttype = posttype;
             Dt = dt;
             Filename = filename;
             State = state;
-            Bik = bik;
             Error = error;
         }
 
@@ -44,8 +38,11 @@ namespace PTK_PSD_Browser.Core.Models
         public DateTime Dt { get; set; }
         public string Filename { get; set; }
         public int State { get; set; }
-        public int Bik { get; set; }
         public int Error { get; set; }
+
+        public string Arrow => State == 6
+            ? "\u00DB" //6 <<
+            : "\u00DC"; //7 >>
     }
 
     //public partial class EloArhPost

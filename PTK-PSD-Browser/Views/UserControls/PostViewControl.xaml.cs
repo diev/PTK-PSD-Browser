@@ -15,32 +15,27 @@
 //------------------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Controls;
 
-namespace PTK_PSD_Browser.Core.Models
+namespace PTK_PSD_Browser.Views.UserControls
 {
-    public class User : BaseObject
+    /// <summary>
+    /// Логика взаимодействия для PostViewControl.xaml
+    /// </summary>
+    public partial class PostViewControl : UserControl
     {
-        public User()
-        {
-            Name = "?";
-            Id = 0;
-            PostTypes = null;
-        }
+        static int _level = 0;
 
-        public User(string name, int id, string postTypes)
+        public PostViewControl()
         {
-            Name = name;
-            Id = id;
-            PostTypes = postTypes;
-        }
+            InitializeComponent();
+            
+            if (_level > 0)
+            {
+                Title.Text += $" ({_level})";
+            }
 
-        public string Name { get; set; }
-        public int Id { get; set; }
-        public string PostTypes { get; set; }
+            _level++;
+        }
     }
 }

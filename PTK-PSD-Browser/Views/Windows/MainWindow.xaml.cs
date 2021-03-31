@@ -16,23 +16,12 @@
 #endregion
 
 using PTK_PSD_Browser.Core.Data;
-using PTK_PSD_Browser.Core.Models;
-using PTK_PSD_Browser.Views.UserControls;
+using PTK_PSD_Browser.Core.ViewModels;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PTK_PSD_Browser.Views.Windows
 {
@@ -44,27 +33,12 @@ namespace PTK_PSD_Browser.Views.Windows
         public MainWindow()
         {
             InitializeComponent();
-
-            Status.Text = "Запрос...";
-            Cursor = Cursors.Wait;
-
-            DataContext = new ViewModel();
-            var db = (ViewModel)DataContext;
-
-            db.SetUser("evdokimov");
-            TitleList.SelectedIndex = 0;
-
-            Status.Text = "Готово";
-            Cursor = Cursors.Arrow;
         }
 
         private void Period_Click(object sender, RoutedEventArgs e)
         {
             DateTime now = DateTime.Now;
             DateTime begin = now, end = now;
-
-            DateBegin.DisplayDateEnd = now;
-            DateEnd.DisplayDateEnd = now;
 
             var name = (e.Source as FrameworkElement).Name;
             switch (name)
@@ -97,10 +71,6 @@ namespace PTK_PSD_Browser.Views.Windows
 
             bool date1 = begin == end;
 
-            DateEnd.Visibility = date1
-                ? Visibility.Hidden
-                : Visibility.Visible;
-
             Date1.IsChecked = date1;
             Date2.IsChecked = !date1;
         }
@@ -110,34 +80,8 @@ namespace PTK_PSD_Browser.Views.Windows
             var name = (e.Source as FrameworkElement).Name;
             bool date1 = name.Equals(nameof(Date1));
 
-            DateEnd.Visibility = date1
-                ? Visibility.Hidden
-                : Visibility.Visible;
-
             Date1.IsChecked = date1;
             Date2.IsChecked = !date1;
-        }
-
-        private void Date_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var control = (DatePicker)sender;
-            if (control.SelectedDate != null)
-            {
-                var db = (ViewModel)DataContext;
-                var date = (DateTime)control.SelectedDate;
-
-                if (control.Name.Equals(nameof(DateBegin)))
-                {
-                    db.PostFilter.DateBegin = date;
-                }
-
-                if (control.Name.Equals(nameof(DateEnd)))
-                {
-                    db.PostFilter.DateEnd = date;
-                }
-
-                RefreshList();
-            }
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
@@ -147,28 +91,26 @@ namespace PTK_PSD_Browser.Views.Windows
 
         private void RefreshList()
         {
+            if (Status == null) return; //?
+
             Status.Text = "Запрос...";
             Cursor = Cursors.Wait;
 
-            var db = (ViewModel)DataContext;
-            db.SetPosts();
+            var ctx = (MainViewModel)DataContext;
+            QueryDatabase.SetPostObjects(ctx.PostObjects, ctx.PostFilterObject);
 
-            Status.Text = "Готово";
+            Status.Text = $"Итого {ctx.PostObjects.Count}";
             Cursor = Cursors.Arrow;
+        }
+
+        private void PostList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PostView.Title.Text = (string)PostList.SelectedValue;
         }
 
         private void TitleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var control = (ComboBox)sender;
-            if (control.SelectedIndex != -1)
-            {
-                var item = ((sender as ComboBox).SelectedItem as Title);
-
-                var db = (ViewModel)DataContext;
-                db.SelectedTitle = item;
-
-                RefreshList();
-            }
+            RefreshList();
         }
     }
 }
